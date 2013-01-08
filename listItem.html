@@ -5,6 +5,29 @@
 
 	<div data-bb-type="image-list" data-bb-header-justify="left" data-bb-style="arrowlist" data-bb-context="true" data-bb-images="none">
 		<div data-bb-type="header">My Notes</div>
+
+		<!-- testing -->
+		<script type="text/javascript">
+			//insert row for test
+			insertNotesRow(db, 1, "armariya", "my name is arm.");
+			insertNotesRow(db, 2, "parasol", "my name is parasol.");
+			insertNotesRow(db, 3, "omagachi", "my name is omagachi");
+
+			var results = queryFromNote (db);
+			var len = results.rows.length();
+			var i = 0;
+			for (i = 0; i < len; i++)
+			{
+				console.log("In ROWS: " + results.rows.item(i).title);
+			}
+
+			deleteNotesRow(db, "armariya");
+			deleteNotesRow(db, "parasol");
+			deleteNotesRow(db, "omagachi");
+		</script>
+		<!-- end testing -->
+
+
 		<div data-bb-type="item" onclick="changeToNote()" data-bb-img="images/Transparent_PIXEL.png" data-bb-title="First Day in KMITL" >Description</div>
 		<div data-bb-type="item" onclick="changeToNote()" data-bb-img="images/Transparent_PIXEL.png" data-bb-title="Note 2" >Description</div> 
 		<div data-bb-type="item" onclick="changeToNote()" data-bb-img="images/Transparent_PIXEL.png" data-bb-title="Note 3" >Description</div> 

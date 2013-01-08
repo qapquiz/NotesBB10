@@ -7,11 +7,56 @@
 	<script type="text/javascript" src="webworks.js"></script>
 	<script type="text/javascript" src="js/changeToNote.js"></script>
 	<script type="text/javascript">
+	//create Database
+	var db = window.openDatabase ("NotesBB10", "1.0", "Database for collecting ease note in this program.", 5*1024*1024);
+	//finish create Database
+	
+	//create table
+	db.transaction (function (tx)
+		{
+			tx.executeSql ("CREATE TABLE IF NOT EXISTS NOTES (id unique, title, description");
+		});
+	//finish create table
+
+	//create function table
+	function insertNotesRow (database, fnId, fnTitle, fnDescription)
+	{
+		database.transaction(function (tx)
+		{
+			tx.executeSql ("INSERT INTO NOTES (id, titile, description) VALUES (?, ?, ?)", [fnId, fnTitle, fnDescription]);
+		});
+	}
+
+	function deleteNotesRow (database, fnTitle)
+	{
+		database.transaction (function (tx)
+		{
+			tx.executeSql ("DELETE FROM NOTES WHERE title = ?", [fnTitle], null);
+		});
+	}
+
+	function queryFromNote (database)
+	{
+		database.transaction (function (tx)
+		{
+			tx.executeSql ("SELECT * FROM NOTES", [], function (tx, results)
+			{
+				return results;
+			}, null);
+		});
+	}
+
+	function doSave (){
+
+	}
+
+
+	</script>
+	<script type="text/javascript">
 	document.addEventListener('webworksready', function(e)
 	{
-		bb.init();
-
-		bb.pushScreen("listItem.html", "listItem");
+		bb.init ();
+		bb.pushScreen ("listItem.html", "listItem");
 	}, false);
 	</script>
 </head>
