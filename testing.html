@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	  <script type="text/javascript">
+		//create Database
+	  	var db = window.openDatabase ("NotesBB10", "1.0", "Database for collecting ease note in this program.", 5*1024*1024);
+		//finish create Database
+	
+		//create table
+		db.transaction (function (tx)
+		{
+			tx.executeSql ("CREATE TABLE IF NOT EXISTS NOTES (id unique, title, description)");			
+		});
+		//finish create table
+
+		//create function table
+		function insertNotesRow (database, fnId, fnTitle, fnDescription)
+		{
+			var id = fnId;
+			var title = fnTitle;
+			var description = fnDescription;
+			database.transaction(function (tx)
+			{
+				tx.executeSql ("INSERT INTO NOTES VALUES (?, ?, ?)", [id, title, description]);
+				console.log("test");
+			});
+		}
+	
+		function deleteNotesRow (database, fnTitle)
+		{
+			var title = fnTitle;
+			database.transaction (function (tx)
+			{
+				tx.executeSql ('DELETE FROM NOTES WHERE title = ?', [title], null);
+			});
+		}
+	
+		function queryFromNote (database)
+		{
+			database.transaction (function (tx)
+			{
+				tx.executeSql ("SELECT * FROM NOTES", [], function (tx, results)
+				{
+					return results;
+				}, null);
+			});
+		}
+
+		//insert row for test
+		insertNotesRow(db, "1", "armariya", "testing");		
+		insertNotesRow(db, "2", "parasol", "testing");
+		insertNotesRow(db, "3", "omagachi", "testing");
+
+
+		db.transaction (function (tx) 
+		{
+			tx.executeSql ("SELECT * FROM NOTES", [], function (tx, results)
+				{
+					console.log("This is really suscess???");
+					var len = results.rows.length;
+					var i;
+					var msg = "<p> Found message: " + len + " rows</p>";
+					document.querySelector('#testArea').innerHTML = msg;
+					for (i=0; i<len; i++)
+					{
+						msg = "<p>" + results.rows.item(i).title + "</p>";
+						document.querySelector('#testArea').innerHTML += msg;
+					}
+					
+				}, null);
+		});
+		deleteNotesRow(db, "armariya");
+		deleteNotesRow(db, "parasol");
+		deleteNotesRow(db, "omagachi");
+	</script>
+	<script type="text/javascript">
+		var db;
+
+		function database(databaseName, version, description, size){
+			this.databaseName = databaseName;
+			this.version = version;
+			this.description = description;
+			this.size = size;
+
+			db = window.openDatabase(databaseName, version, description, size);
+			db.createNotesTable();
+			
+		}
+		
+		database.prototype.createNotesTable = function(){
+			db.transaction(function (tx){
+					tx.executeSql("CREATE IF NOT EXISTS NOTES (id unique, title, description");
+					});	
+		};
+
+		database.prototype.insertToNotes = function(id, title, description){
+			e_id = id;
+			e_title = title;
+			e_description = description;
+		};
+
+		database.prototype.deleteInNotes = function(){
+
+		}
+
+		database.prototye.dropTable = function(){
+
+		}
+	</script>
+	</head>
+	<body>
+	<div id="testArea" name="testArea"></div>
+	</body>
+</html>
